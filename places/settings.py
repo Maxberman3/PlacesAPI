@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$e=7p@n7l0%-@+s%6j=d-ot!)r5$&r3^82$!4p%$2&8%f1qp+0'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY', '$e=7p@n7l0%-@+s%6j=d-ot!)r5$&r3^82$!4p%$2&8%f1qp+0')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'placesapi.apps.PlacesapiConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -118,3 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Program Constants
+OPEN_MAP_URI = 'http://api.opentripmap.com/0.1/en/places/'
+OPEN_MAP_KEY = os.environ.get('OPEN_MAP_KEY', None)

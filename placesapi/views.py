@@ -53,7 +53,7 @@ class Details(APIView):
     def GetOpenMapDetails(self, xid):
         response = requests.get(
             urljoin(OPEN_MAP_URI, 'xid/{}'.format(xid)), params={'apikey': OPEN_MAP_KEY})
-        return response
+        return response.json()
 
     def get(self, request, xid):
         cached_details = cache.get(xid)

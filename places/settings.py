@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'placesapi.apps.PlacesapiConfig',
     'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -134,3 +136,5 @@ CACHES = {
         'TIMEOUT': os.environ.get('CACHE_TTL_SECONDS', 300)
     }
 }
+# Allow CORS
+CORS_ORIGIN_ALLOW_ALL = True

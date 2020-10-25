@@ -6,6 +6,7 @@ from django.conf import settings
 from urllib.parse import urljoin
 from rest_framework.response import Response
 from django.http import Http404
+from django.core.cache import cache
 
 OPEN_MAP_KEY = settings.OPEN_MAP_KEY
 OPEN_MAP_URI = settings.OPEN_MAP_URI
@@ -38,8 +39,14 @@ class Search(APIView):
 
     def get(self, request):
         search_params = self.CheckQueryParams(request)
+        cache_key = search_params.place_name + search_params.radius
+        cached_search = cache.get(cache_key)
+        if cached_search is not None:
+            return Response(cached_search)
         coordinates = self.GetOpenMapCoordinates(search_params.place_name)
-        return Response(self.GetOpenMapSearch(coordinates, search_params))
+        open_map_search = self.GetOpenMapSearch(coordinates, search_params)
+        cache.set(cache_key, open_map_search)
+        return Response(open_map_search)
 
 
 class Details(APIView):
@@ -49,4 +56,9 @@ class Details(APIView):
         return response
 
     def get(self, request, xid):
-        return Response(self.GetOpenMapDetails(xid))
+        cached_details = cache.get(xid)
+        if cached_details is not None:
+            return Response(cached_details)
+        open_map_details = self.GetOpenMapDetails(xid)
+        cache.set(xid, open_map_details)
+        return Response(open_map_details)

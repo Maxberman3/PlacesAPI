@@ -125,3 +125,12 @@ STATIC_URL = '/static/'
 # Program Constants
 OPEN_MAP_URI = 'http://api.opentripmap.com/0.1/en/places/'
 OPEN_MAP_KEY = os.environ.get('OPEN_MAP_KEY', None)
+
+# Cache Set Up
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'places_cache_table',
+        'TIMEOUT': os.environ.get('CACHE_TTL_SECONDS', 300)
+    }
+}

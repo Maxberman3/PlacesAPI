@@ -4,7 +4,8 @@ from placesapi import views
 
 urlpatterns = [
     path('search', views.Search.as_view(), name='search'),
-    path('details/<slug:xid>', views.Details.as_view(), name='details')
+    path('details/<slug:xid>', views.Details.as_view(), name='details'),
+    path('', views.index, name='index')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

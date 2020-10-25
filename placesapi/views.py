@@ -7,9 +7,14 @@ from urllib.parse import urljoin
 from rest_framework.response import Response
 from django.http import Http404
 from django.core.cache import cache
+from django.views.generic import TemplateView
+from django.views.decorators.cache import never_cache
 
 OPEN_MAP_KEY = settings.OPEN_MAP_KEY
 OPEN_MAP_URI = settings.OPEN_MAP_URI
+
+# Serve Single Page Application
+index = never_cache(TemplateView.as_view(template_name='index.html'))
 
 
 class Search(APIView):
